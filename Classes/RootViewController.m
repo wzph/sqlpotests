@@ -11,6 +11,8 @@
 
 
 @implementation RootViewController
+@synthesize tableBacking;
+@synthesize stuffToDisplay;
 
 /*
 - (void)viewDidLoad {
@@ -21,11 +23,12 @@
 }
 */
 
-/*
+
 - (void)viewWillAppear:(BOOL)animated {
+	self.tableBacking = BACK_TABLE_WITH_AN_ARRAY_OF_OBJECTS;
     [super viewWillAppear:animated];
 }
-*/
+
 /*
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -58,13 +61,33 @@
 #pragma mark Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+	switch ( self.tableBacking ) {
+		case BACK_TABLE_WITH_PAIRED_ARRAYS:
+			return 1;
+			break;
+		case BACK_TABLE_WITH_AN_OBJECT_AT_A_TIME:
+			return 1;
+			break;
+		default:
+			return 1;
+			break;
+	}
 }
 
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 0;
+	switch ( self.tableBacking ) {
+		case BACK_TABLE_WITH_PAIRED_ARRAYS:
+			return 1;
+			break;
+		case BACK_TABLE_WITH_AN_OBJECT_AT_A_TIME:
+			return 1;
+			break;
+		default:
+			return 1;
+			break;
+	}
 }
 
 
@@ -79,7 +102,7 @@
     }
     
     // Set up the cell...
-
+	cell.text = @"Hi there";
     return cell;
 }
 
@@ -133,9 +156,22 @@
 
 
 - (void)dealloc {
+	[stuffToDisplay release];
     [super dealloc];
 }
 
+-(IBAction)handleTableBackingChange:(id)sender {
+	self.stuffToDisplay = nil;
+
+	if ( sender == self ) {
+		self.tableBacking = BACK_TABLE_WITH_AN_ARRAY_OF_OBJECTS;
+	}
+	else {
+		self.tableBacking = [(UISegmentedControl *)sender selectedSegmentIndex];
+	}
+	
+	[(UITableView *)self.view reloadData];
+}
 
 @end
 

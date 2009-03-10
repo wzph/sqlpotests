@@ -15,12 +15,11 @@
 @synthesize window;
 @synthesize navigationController;
 
-
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
-	
 	// Configure and show the window
 	[window addSubview:[navigationController view]];
 	[window makeKeyAndVisible];
+	
 }
 
 
@@ -30,9 +29,11 @@
 
 
 - (void)dealloc {
-	[navigationController release];
+	[navigationController release];	
 	[window release];
 	[super dealloc];
 }
+
+
 
 @end
