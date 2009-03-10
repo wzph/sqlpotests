@@ -1,0 +1,8 @@
+build/*
+locus.xcodeproj/*.mode1v3
+locus.xcodeproj/*.mode2v3
+locus.xcodeproj/*.pbxuser
+
+*.swp
+*~.nib
+.DS_Store
