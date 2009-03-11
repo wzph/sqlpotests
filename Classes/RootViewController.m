@@ -84,7 +84,7 @@
 			return 1;
 			break;
 		case BACK_TABLE_WITH_AN_OBJECT_AT_A_TIME:
-			return 1;
+			return [SQLPOTestsGroomer count];
 			break;
 		default:
 			return [self.stuffToDisplay count];
@@ -129,7 +129,10 @@
 		
 	} 
 	else if ( self.tableBacking == BACK_TABLE_WITH_AN_OBJECT_AT_A_TIME ) {
-		
+		SQLPOTestsGroomer *groomer = [[SQLPOTestsGroomer findByCriteria:[NSString stringWithFormat:@"ORDER BY company_name ASC LIMIT 1 OFFSET %d", indexPath.row]] objectAtIndex:0];
+		((UILabel*)[cell viewWithTag:GROOMER_NAME_LABEL_TAG]).text = groomer.companyName;
+		((UILabel*)[cell viewWithTag:PET_COUNT_LABEL_TAG]).text = [NSString stringWithFormat:@"%d pets", [[groomer pets] count]];
+		((UILabel*)[cell viewWithTag:CUSTOMER_COUNT_LABEL_TAG]).text = [NSString stringWithFormat:@"1st customer: %@", [[[groomer customers] objectAtIndex:0] lastName]];
 	}
 	else {
 		SQLPOTestsGroomer *groomer = (SQLPOTestsGroomer *)[self.stuffToDisplay objectAtIndex:indexPath.row];
@@ -198,6 +201,7 @@
 }
 
 -(IBAction)handleTableBackingChange:(id)sender {
+	NSLog( @"Dropping stuffToDisplay" );
 	self.stuffToDisplay = nil;
 
 	if ( sender == self ) {
@@ -208,7 +212,8 @@
 	}
 
 	if ( self.tableBacking == BACK_TABLE_WITH_AN_ARRAY_OF_OBJECTS ) {
-		self.stuffToDisplay = [SQLPOTestsGroomer allObjects];
+		NSLog( @"Reloading stuffToDisplay" );
+		self.stuffToDisplay = [SQLPOTestsGroomer findByCriteria:@"ORDER BY company_name ASC"];
 	}
 	
 	[(UITableView *)self.view reloadData];

@@ -24,10 +24,10 @@
 
 @interface RootViewController : UITableViewController {
 	NSUInteger tableBacking;
-	NSMutableArray *stuffToDisplay;
+	NSArray *stuffToDisplay;
 }
 @property (nonatomic) NSUInteger tableBacking;
-@property (nonatomic, retain) NSMutableArray *stuffToDisplay;
+@property (nonatomic, retain) NSArray *stuffToDisplay;
 
 -(IBAction)handleTableBackingChange:(id)sender;
 
