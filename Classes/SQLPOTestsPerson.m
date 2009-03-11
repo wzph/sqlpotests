@@ -7,11 +7,16 @@
 //
 
 #import "SQLPOTestsPerson.h"
-
+#import "SQLPOTestsPet.h"
 
 @implementation SQLPOTestsPerson
 @synthesize firstName;
 @synthesize lastName;
 @synthesize birthday;
+
+
+-(NSArray *)pets {
+	return [self findRelated:[SQLPOTestsPet class] forProperty:@"owner" filter:nil];
+}
 
 @end

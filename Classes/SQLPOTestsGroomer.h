@@ -23,4 +23,6 @@
 @property (nonatomic,retain) NSString *address;
 @property (nonatomic,retain) NSNumber *rate;
 
+-(NSArray *)pets;
+-(NSArray *)customers;
 @end

@@ -17,5 +17,6 @@
 @property (nonatomic,retain) NSString *firstName;
 @property (nonatomic,retain) NSString *lastName;
 @property (nonatomic,retain) NSDate *birthday;
+-(NSArray *)pets;
 
 @end

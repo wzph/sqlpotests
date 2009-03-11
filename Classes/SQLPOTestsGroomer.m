@@ -7,7 +7,7 @@
 //
 
 #import "SQLPOTestsGroomer.h"
-
+#import "SQLPOTestsPet.h"
 
 @implementation SQLPOTestsGroomer
 @synthesize firstName;
@@ -15,5 +15,19 @@
 @synthesize companyName;
 @synthesize address;
 @synthesize rate;
+
+-(NSArray *)pets {
+	return [self findRelated:[SQLPOTestsPet class] forProperty:@"groomer" filter:nil];
+}
+
+-(NSArray *)customers {
+	NSArray *p = [self pets];
+	NSMutableArray *customers = [NSMutableArray arrayWithCapacity:[p count]];
+
+	for ( SQLPOTestsPet *pet in p ) {
+		[customers addObject:pet.owner];
+	}
+	return customers;
+}
 
 @end

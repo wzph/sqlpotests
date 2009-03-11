@@ -8,7 +8,9 @@
 
 #import "RootViewController.h"
 #import "SQLPOTestsAppDelegate.h"
-
+#import "SQLPOTestsPet.h"
+#import "SQLPOTestsGroomer.h"
+#import "SQLPOTestsPerson.h"
 
 @implementation RootViewController
 @synthesize tableBacking;
@@ -25,7 +27,7 @@
 
 
 - (void)viewWillAppear:(BOOL)animated {
-	self.tableBacking = BACK_TABLE_WITH_AN_ARRAY_OF_OBJECTS;
+	[self handleTableBackingChange:self];
     [super viewWillAppear:animated];
 }
 
@@ -85,7 +87,7 @@
 			return 1;
 			break;
 		default:
-			return 1;
+			return [self.stuffToDisplay count];
 			break;
 	}
 }
@@ -94,18 +96,53 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"GroomerCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
+
+		UILabel *groomerNameLabel = [[UILabel alloc] initWithFrame:GROOMER_NAME_LABEL_FRAME];
+		groomerNameLabel.tag = GROOMER_NAME_LABEL_TAG;
+		groomerNameLabel.font = [UIFont boldSystemFontOfSize:[UIFont buttonFontSize]];
+		
+		UILabel *petCountLabel = [[UILabel alloc] initWithFrame:PET_COUNT_LABEL_FRAME];
+		petCountLabel.tag = PET_COUNT_LABEL_TAG;
+		petCountLabel.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
+
+		UILabel *customerCountLabel = [[UILabel alloc] initWithFrame:CUSTOMER_COUNT_LABEL_FRAME];
+		customerCountLabel.tag = CUSTOMER_COUNT_LABEL_TAG;
+		customerCountLabel.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
+		
+		[cell addSubview:groomerNameLabel];
+		[cell addSubview:petCountLabel];
+		[cell addSubview:customerCountLabel];
+		
+		[groomerNameLabel autorelease];
+		[petCountLabel autorelease];
+		[customerCountLabel autorelease];
+
     }
     
     // Set up the cell...
-	cell.text = @"Hi there";
+	if ( self.tableBacking == BACK_TABLE_WITH_PAIRED_ARRAYS ) {
+		
+	} 
+	else if ( self.tableBacking == BACK_TABLE_WITH_AN_OBJECT_AT_A_TIME ) {
+		
+	}
+	else {
+		SQLPOTestsGroomer *groomer = (SQLPOTestsGroomer *)[self.stuffToDisplay objectAtIndex:indexPath.row];
+		((UILabel*)[cell viewWithTag:GROOMER_NAME_LABEL_TAG]).text = groomer.companyName;
+		((UILabel*)[cell viewWithTag:PET_COUNT_LABEL_TAG]).text = [NSString stringWithFormat:@"%d pets", [[groomer pets] count]];
+		((UILabel*)[cell viewWithTag:CUSTOMER_COUNT_LABEL_TAG]).text = [NSString stringWithFormat:@"1st customer: %@", [[[groomer customers] objectAtIndex:0] lastName]];
+	}
     return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return ROW_HEIGHT;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Navigation logic may go here. Create and push another view controller.
@@ -168,6 +205,10 @@
 	}
 	else {
 		self.tableBacking = [(UISegmentedControl *)sender selectedSegmentIndex];
+	}
+
+	if ( self.tableBacking == BACK_TABLE_WITH_AN_ARRAY_OF_OBJECTS ) {
+		self.stuffToDisplay = [SQLPOTestsGroomer allObjects];
 	}
 	
 	[(UITableView *)self.view reloadData];
