@@ -558,17 +558,18 @@ NSMutableArray *checkedTables;
 	
 	sqlite3 *database = [[SQLiteInstanceManager sharedManager] database];
 	
-	NSMutableString *query = [NSMutableString stringWithString:@"select pk"];
+	NSMutableString *query = [NSMutableString stringWithFormat:@"select %@.pk", [[self class] tableName]];
 	
 	for (NSString *oneProp in theProps)
 		[query appendFormat:@", %@", [oneProp stringAsSQLColumnName]];
 	
-	[query appendFormat:@" FROM %@ %@ ORDER BY PK", [[self class] tableName], criteriaString];
+	[query appendFormat:@" FROM %@ %@ ORDER BY %@.PK", [[self class] tableName], criteriaString, [[self class] tableName]];
 	
 	for (int i = 0; i <= [theProps count]; i++)
 		[ret addObject:[NSMutableArray array]];
 	
 	sqlite3_stmt *statement;
+	NSLog( @"SQL: %@", query );
 	if (sqlite3_prepare_v2( database, [query UTF8String], -1, &statement, NULL) == SQLITE_OK)
 	{
 		while (sqlite3_step(statement) == SQLITE_ROW)
@@ -776,7 +777,7 @@ NSMutableArray *checkedTables;
 		}
 		
 		[updateSQL appendFormat:@") VALUES (?%@)", bindSQL];
-		
+
 		sqlite3_stmt *stmt;
 		int result = sqlite3_prepare_v2( database, [updateSQL UTF8String], -1, &stmt, nil);
 		
