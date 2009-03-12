@@ -1,0 +1,26 @@
+# SQLPOTests #
+
+SQLPOTests is an iPhone app that (as of this writing) allows you to get a feel for three different approaches to using [SQLitePersistentObjects](http://code.google.com/p/sqlitepersistentobjects/).  The three approaches included are:
+
+* Loading all objects into an array
+* Using the +pairedArrays... method
+* Loading one object at a time, per table cell
+
+I was prompted to create this application by discussion on the [mailing list](http://groups.google.com/group/sqlitepersistentobjects-user) surrounding how to back a UITableView with SQLPO.  pairedArrays did not seem like the best approach to me, for two reasons.  First, JOINs are difficult.  Second, you lose all the instance methods from the class.
+
+I have not done any formal profiling, but initial results seem to show that loading one object at a time is by far the fastest way to switch into a UITableView backed by SQLPO.  When scrolling, however, the UITableView backed by the results from pairedArrays is clearly the winner.
+
+## The Data ##
+
+The data in this sample app consists of Groomers, Pets, and Persons.  You can think of Pets as a join table between the two other tables.  The table that the app displays lists Groomers sorted by company name, with a label for the number of Pets it has, and the name of the first customer (i.e., the name of the owner of the first Pet).
+
+Clicking on a segment of the UISegmentedControl will change the table backing accordingly.  It's not thread safe, so be sure not to click on a different segment while the activity indicator is visible.
+
+## Notes ##
+
+If you use SQLPO, the Rakefile in this project can be quite useful.
+
+## TODO ##
+
+* Make it thread safe.
+* Add an index to the table, or create a new view with an indexed table, for comparison.
