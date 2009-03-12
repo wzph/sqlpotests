@@ -82,8 +82,8 @@
 	switch ( self.tableBacking ) {
 		case BACK_TABLE_WITH_PAIRED_ARRAYS:
 			if ( [self.stuffToDisplay respondsToSelector:@selector( objectAtIndex: )] ) {
-				if ( [[self.stuffToDisplay objectAtIndex:1] respondsToSelector:@selector( count )] ) {
-					return [[self.stuffToDisplay objectAtIndex:1] count];
+				if ( [[self.stuffToDisplay objectAtIndex:0] respondsToSelector:@selector( count )] ) {
+					return [[self.stuffToDisplay objectAtIndex:0] count];
 				}
 				else {
 					return 1;
@@ -136,7 +136,7 @@
     
     // Set up the cell...
 	if ( self.tableBacking == BACK_TABLE_WITH_PAIRED_ARRAYS ) {
-		((UILabel*)[cell viewWithTag:GROOMER_NAME_LABEL_TAG]).text = [[self.stuffToDisplay objectAtIndex:1] objectAtIndex:indexPath.row];
+		((UILabel*)[cell viewWithTag:GROOMER_NAME_LABEL_TAG]).text = [[self.stuffToDisplay objectAtIndex:0] objectAtIndex:indexPath.row];
 //		((UILabel*)[cell viewWithTag:PET_COUNT_LABEL_TAG]).text = [NSString stringWithFormat:@"%d pets", [[groomer pets] count]];
 //		((UILabel*)[cell viewWithTag:CUSTOMER_COUNT_LABEL_TAG]).text = [NSString stringWithFormat:@"1st customer: %@", [[[groomer customers] objectAtIndex:0] lastName]];
 	}
@@ -229,13 +229,19 @@
 	}
 	else if ( self.tableBacking == BACK_TABLE_WITH_PAIRED_ARRAYS ) {
 		NSLog( @"Reloading stuffToDisplay (pairedArrays)" );
-		self.stuffToDisplay = [SQLPOTestsGroomer pairedArraysForProperties:[NSArray arrayWithObjects:@"companyName", nil] withCriteria:@"INNER JOIN s_q_l_p_o_tests_pet ON s_q_l_p_o_tests_pet.groomer = 'SQLPOTestsGroomer-'||s_q_l_p_o_tests_groomer.pk" ];
+		NSArray *names = [SQLPOTestsGroomer pairedArraysForProperties:[NSArray arrayWithObjects:@"companyName", nil] ];
+		NSArray *petCounts = [SQLPOTestsGroomer pairedArraysForProperties:[NSArray arrayWithObjects:@"companyName", nil] withCriteria:@"INNER JOIN s_q_l_p_o_tests_pet ON s_q_l_p_o_tests_pet.groomer = 'SQLPOTestsGroomer-'||s_q_l_p_o_tests_groomer.pk" ];
+//		NSArray *customerCounts = [SQLPOTestsGroomer pairedArraysForProperties:[NSArray arrayWithObjects:@"companyName", nil] withCriteria:@"INNER JOIN s_q_l_p_o_tests_pet ON s_q_l_p_o_tests_pet.groomer = 'SQLPOTestsGroomer-'||s_q_l_p_o_tests_groomer.pk" ];
+
+		self.stuffToDisplay = [NSArray arrayWithObjects:[names objectAtIndex:0], [names objectAtIndex:1], nil];
 		
 //		for( NSArray *array in self.stuffToDisplay ) {
+		for( id thing in self.stuffToDisplay ) {
+			NSLog( @"Got a %@", [thing className] );
 //			for ( id thing in array ) {
 //				NSLog( @"Got a %@", [thing className] );
 //			}
-//		}
+		}
 	}
 	
 	[(UITableView *)self.view reloadData];

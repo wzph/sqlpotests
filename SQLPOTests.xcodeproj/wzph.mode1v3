@@ -351,7 +351,7 @@
 										<key>_historyCapacity</key>
 										<integer>10</integer>
 										<key>bookmark</key>
-										<string>8ABDD1E10F679DC400044623</string>
+										<string>8ABDD1EB0F67A26300044623</string>
 										<key>history</key>
 										<array>
 											<string>8A9969650F67764E0025564F</string>
@@ -555,7 +555,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>258448836.075762</real>
+	<real>258450019.140553</real>
 	<key>ToolbarDisplayMode</key>
 	<integer>1</integer>
 	<key>ToolbarIsVisible</key>
@@ -574,9 +574,9 @@
 		<string>8ABDD1B10F67975300044623</string>
 		<string>1CD10A99069EF8BA00B06720</string>
 		<string>1C530D57069F1CE1000CFCEE</string>
-		<string>/Users/wzph/Projects/SQLPOTests/SQLPOTests.xcodeproj</string>
 		<string>8A5E88BC0F66320B007FEB71</string>
 		<string>1C78EAAD065D492600B07095</string>
+		<string>/Users/wzph/Projects/SQLPOTests/SQLPOTests.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
 	<string>0 59 1440 819 0 0 1440 878 </string>
