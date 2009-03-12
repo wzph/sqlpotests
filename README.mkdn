@@ -12,13 +12,13 @@ I have not done any formal profiling, but initial results seem to show that load
 
 ## The Data ##
 
-The data in this sample app consists of Groomers, Pets, and Persons.  You can think of Pets as a join table between the two other tables.  The table that the app displays lists Groomers sorted by company name, with a label for the number of Pets it has, and the name of the first customer (i.e., the name of the owner of the first Pet).
+The data in this sample app consists of 500 Groomers, 5000 Pets, and 500 Persons.  You can think of Pets as a join table between the two other tables.  The table that the app displays lists Groomers sorted by company name, with a label for the number of Pets it has, and the name of the first customer (i.e., the name of the owner of the first Pet).
 
 Clicking on a segment of the UISegmentedControl will change the table backing accordingly.  It's not thread safe, so be sure not to click on a different segment while the activity indicator is visible.
 
 ## Notes ##
 
-If you use SQLPO, the Rakefile in this project can be quite useful.
+See the output from `rake -T`.  None of the rake tasks will work unless you've built and run the application.
 
 ## TODO ##
 
