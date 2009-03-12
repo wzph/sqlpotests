@@ -11,10 +11,13 @@
 #import "SQLPOTestsPet.h"
 #import "SQLPOTestsGroomer.h"
 #import "SQLPOTestsPerson.h"
+#import "NSMutableArray-MultipleSort.h"
 
 @implementation RootViewController
 @synthesize tableBacking;
 @synthesize stuffToDisplay;
+@synthesize activity;
+@synthesize begin;
 
 /*
 - (void)viewDidLoad {
@@ -28,6 +31,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[self handleTableBackingChange:self];
+	[self.activity setFrame:ACTIVITY_INDICATOR_FRAME];
+	[[[[UIApplication sharedApplication] windows] objectAtIndex:0] addSubview:self.activity];
     [super viewWillAppear:animated];
 }
 
@@ -136,9 +141,9 @@
     
     // Set up the cell...
 	if ( self.tableBacking == BACK_TABLE_WITH_PAIRED_ARRAYS ) {
-		((UILabel*)[cell viewWithTag:GROOMER_NAME_LABEL_TAG]).text = [[self.stuffToDisplay objectAtIndex:0] objectAtIndex:indexPath.row];
-//		((UILabel*)[cell viewWithTag:PET_COUNT_LABEL_TAG]).text = [NSString stringWithFormat:@"%d pets", [[groomer pets] count]];
-//		((UILabel*)[cell viewWithTag:CUSTOMER_COUNT_LABEL_TAG]).text = [NSString stringWithFormat:@"1st customer: %@", [[[groomer customers] objectAtIndex:0] lastName]];
+		((UILabel*)[cell viewWithTag:GROOMER_NAME_LABEL_TAG]).text = [[self.stuffToDisplay objectAtIndex:1] objectAtIndex:indexPath.row];
+		((UILabel*)[cell viewWithTag:PET_COUNT_LABEL_TAG]).text = [NSString stringWithFormat:@"%@ pets", [[self.stuffToDisplay objectAtIndex:2] objectAtIndex:indexPath.row]];
+		((UILabel*)[cell viewWithTag:CUSTOMER_COUNT_LABEL_TAG]).text = [NSString stringWithFormat:@"1st customer: %@", [[self.stuffToDisplay objectAtIndex:3] objectAtIndex:indexPath.row]];
 	}
 	else if ( self.tableBacking == BACK_TABLE_WITH_AN_OBJECT_AT_A_TIME ) {
 		SQLPOTestsGroomer *groomer = [[SQLPOTestsGroomer findByCriteria:[NSString stringWithFormat:@"ORDER BY company_name ASC LIMIT 1 OFFSET %d", indexPath.row]] objectAtIndex:0];
@@ -208,43 +213,64 @@
 
 
 - (void)dealloc {
+	[activity release];
 	[stuffToDisplay release];
+	[begin release];
     [super dealloc];
 }
 
 -(IBAction)handleTableBackingChange:(id)sender {
+	[self.activity startAnimating];
+	self.begin = [NSDate date];
+
+	[NSThread detachNewThreadSelector:@selector( reloadBackingData: ) toTarget:self withObject:sender];
+}
+
+-(void)finishTableBackingChange:(id)sender {
+	[(UITableView *)self.tableView reloadData];
+
+	NSDate *end = [NSDate date];
+	NSLog( @"RELOAD TOOK %.2fms", [end timeIntervalSinceDate:self.begin] * 1000.0 );
+	[self.activity stopAnimating];
+}
+
+-(void)reloadBackingData:(id)sender {
+	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+
 	NSLog( @"Dropping stuffToDisplay" );
 	self.stuffToDisplay = nil;
-
+	
 	if ( sender == self ) {
 		self.tableBacking = BACK_TABLE_WITH_AN_ARRAY_OF_OBJECTS;
 	}
 	else {
 		self.tableBacking = [(UISegmentedControl *)sender selectedSegmentIndex];
 	}
-
+	
 	if ( self.tableBacking == BACK_TABLE_WITH_AN_ARRAY_OF_OBJECTS ) {
 		NSLog( @"Reloading stuffToDisplay (objects)" );
 		self.stuffToDisplay = [SQLPOTestsGroomer findByCriteria:@"ORDER BY company_name ASC"];
 	}
 	else if ( self.tableBacking == BACK_TABLE_WITH_PAIRED_ARRAYS ) {
 		NSLog( @"Reloading stuffToDisplay (pairedArrays)" );
-		NSArray *names = [SQLPOTestsGroomer pairedArraysForProperties:[NSArray arrayWithObjects:@"companyName", nil] ];
-		NSArray *petCounts = [SQLPOTestsGroomer pairedArraysForProperties:[NSArray arrayWithObjects:@"companyName", nil] withCriteria:@"INNER JOIN s_q_l_p_o_tests_pet ON s_q_l_p_o_tests_pet.groomer = 'SQLPOTestsGroomer-'||s_q_l_p_o_tests_groomer.pk" ];
-//		NSArray *customerCounts = [SQLPOTestsGroomer pairedArraysForProperties:[NSArray arrayWithObjects:@"companyName", nil] withCriteria:@"INNER JOIN s_q_l_p_o_tests_pet ON s_q_l_p_o_tests_pet.groomer = 'SQLPOTestsGroomer-'||s_q_l_p_o_tests_groomer.pk" ];
-
-		self.stuffToDisplay = [NSArray arrayWithObjects:[names objectAtIndex:0], [names objectAtIndex:1], nil];
+		NSArray *pksAndNames = [SQLPOTestsGroomer pairedArraysForProperties:[NSArray arrayWithObjects:@"companyName", nil] ];
+		NSMutableArray *pks = [pksAndNames objectAtIndex:0];
+		NSMutableArray *names = [pksAndNames objectAtIndex:1];
+		NSMutableArray *petCounts = [NSMutableArray arrayWithCapacity:[pks count]];
+		NSMutableArray *firstCustomers = [NSMutableArray arrayWithCapacity:[pks count]];
 		
-//		for( NSArray *array in self.stuffToDisplay ) {
-		for( id thing in self.stuffToDisplay ) {
-			NSLog( @"Got a %@", [thing className] );
-//			for ( id thing in array ) {
-//				NSLog( @"Got a %@", [thing className] );
-//			}
+		
+		for( NSNumber *pk in pks ) {
+			double count = [SQLPOTestsPet performSQLAggregation:[NSString stringWithFormat:@"SELECT COUNT(pk) FROM s_q_l_p_o_tests_pet WHERE groomer='SQLPOTestsGroomer-%@' GROUP BY groomer", pk]];
+			SQLPOTestsPet *pet = (SQLPOTestsPet *)[SQLPOTestsPet findFirstByCriteria:[NSString stringWithFormat:@"WHERE groomer='SQLPOTestsGroomer-%@' LIMIT 1", pk]];
+			[petCounts addObject:[NSNumber numberWithDouble:count]];
+			[firstCustomers addObject:[[pet owner] lastName]];
 		}
+		
+		[names sortArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:) withPairedMutableArrays:pks, petCounts, firstCustomers, nil];
+		self.stuffToDisplay = [NSArray arrayWithObjects:pks, names, petCounts, firstCustomers, nil];
 	}
-	
-	[(UITableView *)self.view reloadData];
+	[self performSelectorOnMainThread:@selector( finishTableBackingChange: ) withObject:sender waitUntilDone:NO];
 }
 
 @end

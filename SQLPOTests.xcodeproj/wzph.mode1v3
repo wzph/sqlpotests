@@ -255,7 +255,6 @@
 						<array>
 							<string>1C37FBAC04509CD000000102</string>
 							<string>1C37FAAC04509CD000000102</string>
-							<string>1C08E77C0454961000C914BD</string>
 							<string>1C37FABC05509CD000000102</string>
 							<string>1C37FABC05539CD112110102</string>
 							<string>E2644B35053B69B200211256</string>
@@ -285,7 +284,6 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateExpansionKey</key>
 							<array>
 								<string>29B97314FDCFA39411CA2CEA</string>
-								<string>8A9968E40F6772FA0025564F</string>
 								<string>080E96DDFE201D6D7F000001</string>
 								<string>29B97315FDCFA39411CA2CEA</string>
 								<string>29B97317FDCFA39411CA2CEA</string>
@@ -296,16 +294,16 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>36</integer>
-									<integer>34</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 99}, {258, 760}}</string>
+							<string>{{0, 0}, {258, 760}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
-						<array/>
+						<array>
+							<string>1C08E77C0454961000C914BD</string>
+						</array>
 						<key>XCIncludePerspectivesSwitch</key>
 						<true/>
 						<key>XCSharingToken</key>
@@ -339,7 +337,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>RootViewController.m</string>
+								<string>RootViewController.h</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -347,36 +345,56 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>RootViewController.m</string>
+										<string>RootViewController.h</string>
 										<key>_historyCapacity</key>
 										<integer>10</integer>
 										<key>bookmark</key>
-										<string>8ABDD1EB0F67A26300044623</string>
+										<string>8ABDD2C90F68DE7200044623</string>
 										<key>history</key>
 										<array>
-											<string>8A9969650F67764E0025564F</string>
-											<string>8A99696B0F6783E20025564F</string>
 											<string>8A9969750F6788720025564F</string>
 											<string>8A9969760F6788720025564F</string>
 											<string>8A99697D0F6789880025564F</string>
-											<string>8A9969B60F6790B10025564F</string>
 											<string>8A9969FA0F6795D80025564F</string>
 											<string>8ABDD1DB0F679DA300044623</string>
-											<string>8ABDD1DC0F679DA300044623</string>
-											<string>8ABDD1D60F679CC300044623</string>
+											<string>8ABDD1FA0F68C80E00044623</string>
+											<string>8ABDD2080F68CADE00044623</string>
+											<string>8ABDD2090F68CADE00044623</string>
+											<string>8ABDD2BA0F68DD5100044623</string>
+											<string>8ABDD2B10F68DD1000044623</string>
 										</array>
 										<key>prevStack</key>
 										<array>
 											<string>8A99696D0F6783E20025564F</string>
-											<string>8A99696E0F6783E20025564F</string>
 											<string>8A9969770F6788720025564F</string>
 											<string>8A9969780F6788720025564F</string>
 											<string>8A9969960F678E080025564F</string>
 											<string>8A9969FE0F6795D80025564F</string>
-											<string>8ABDD1C30F6798A200044623</string>
-											<string>8ABDD1CD0F679C8100044623</string>
 											<string>8ABDD1DD0F679DA300044623</string>
-											<string>8ABDD1DE0F679DA300044623</string>
+											<string>8ABDD1F30F68C60C00044623</string>
+											<string>8ABDD26A0F68D85300044623</string>
+											<string>8ABDD26B0F68D85300044623</string>
+											<string>8ABDD2760F68D91700044623</string>
+											<string>8ABDD2770F68D91700044623</string>
+											<string>8ABDD2830F68DA2000044623</string>
+											<string>8ABDD2840F68DA2000044623</string>
+											<string>8ABDD2850F68DA2000044623</string>
+											<string>8ABDD2890F68DA3500044623</string>
+											<string>8ABDD28D0F68DA5100044623</string>
+											<string>8ABDD2910F68DAA300044623</string>
+											<string>8ABDD2940F68DAB700044623</string>
+											<string>8ABDD2990F68DACB00044623</string>
+											<string>8ABDD2A00F68DCB500044623</string>
+											<string>8ABDD2A10F68DCB500044623</string>
+											<string>8ABDD2A20F68DCB500044623</string>
+											<string>8ABDD2A30F68DCB500044623</string>
+											<string>8ABDD2A40F68DCB500044623</string>
+											<string>8ABDD2A50F68DCB500044623</string>
+											<string>8ABDD2A60F68DCB500044623</string>
+											<string>8ABDD2A70F68DCB500044623</string>
+											<string>8ABDD2B30F68DD1000044623</string>
+											<string>8ABDD2B40F68DD1000044623</string>
+											<string>8ABDD2BB0F68DD5100044623</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -555,7 +573,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>258450019.140553</real>
+	<real>258530930.01501301</real>
 	<key>ToolbarDisplayMode</key>
 	<integer>1</integer>
 	<key>ToolbarIsVisible</key>
@@ -574,9 +592,9 @@
 		<string>8ABDD1B10F67975300044623</string>
 		<string>1CD10A99069EF8BA00B06720</string>
 		<string>1C530D57069F1CE1000CFCEE</string>
+		<string>/Users/wzph/Projects/SQLPOTests/SQLPOTests.xcodeproj</string>
 		<string>8A5E88BC0F66320B007FEB71</string>
 		<string>1C78EAAD065D492600B07095</string>
-		<string>/Users/wzph/Projects/SQLPOTests/SQLPOTests.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
 	<string>0 59 1440 819 0 0 1440 878 </string>
@@ -811,14 +829,12 @@
 							<key>Dock</key>
 							<array>
 								<dict>
-									<key>BecomeActive</key>
-									<true/>
 									<key>ContentConfiguration</key>
 									<dict>
 										<key>PBXProjectModuleGUID</key>
 										<string>1CDD528C0622207200134675</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>RootViewController.m</string>
+										<string>SQLPOTestsAppDelegate.h</string>
 										<key>StatusBarVisibility</key>
 										<true/>
 									</dict>
@@ -839,6 +855,8 @@
 							<string>478pt</string>
 						</dict>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>

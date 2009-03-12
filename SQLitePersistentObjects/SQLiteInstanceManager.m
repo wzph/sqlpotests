@@ -142,6 +142,8 @@ static SQLiteInstanceManager *sharedSQLiteManager = nil;
 {
 	[self executeUpdateSQL:@"VACUUM"];
 }
+
+
 - (void)executeUpdateSQL:(NSString *) updateSQL
 {
 	char *errorMsg;

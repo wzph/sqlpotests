@@ -569,7 +569,7 @@ NSMutableArray *checkedTables;
 		[ret addObject:[NSMutableArray array]];
 	
 	sqlite3_stmt *statement;
-	NSLog( @"SQL: %@", query );
+
 	if (sqlite3_prepare_v2( database, [query UTF8String], -1, &statement, NULL) == SQLITE_OK)
 	{
 		while (sqlite3_step(statement) == SQLITE_ROW)
